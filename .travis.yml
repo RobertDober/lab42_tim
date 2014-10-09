@@ -15,6 +15,5 @@ install:
   - cd ~/.vim/bundle && git clone https://github.com/tpope/timl
 script: 
   # Need to run vim with a source file that exits
-  - ls -ltr # Where are we.?
-  # - cd test && vim -S run.vim
+  - cd timl/test && vim -S run.vim
 
