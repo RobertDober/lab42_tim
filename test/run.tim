@@ -1,12 +1,19 @@
+(ns run)
 
 (def errors (atom []))
-(defn add_error [error]
+
+(defn add-error [error]
   (swap! errors conj error))
+
+(defmacro test [ msg & body]
+  `(when (not ~@body) (add-error (str ~msg ": " (pr-str '~@body)))))
 
 (defn write-to-file [text fnm]
   (let [lines (if (vector? text) (join "\n" text) text)]
     (execute
       (str "call writefile(split(\"" lines "\", \"\n\"), '" fnm "')"))))
+
+(test "one eq two" (= 1 2))
 
 (write-to-file @errors "../tmp/errors")
 (execute "qa!")

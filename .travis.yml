@@ -18,5 +18,10 @@ install:
 script: 
   - cd test && vim -S run.vim
     # If errors file is empty we are happy
-  - cd ../tmp && ! test -s errors 
-
+  - |
+    if test -s errors; then
+      cat errors
+      false
+     else
+      true
+     fi 
