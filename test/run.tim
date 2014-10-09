@@ -1,8 +1,12 @@
-(print "hello run.tim")
-(use 'timl.test)
-(assert false)
-; In case of no errors
-(if (zero? errors)
-  (execute "wqa")
-  (execute "cquit"))
 
+(def errors (atom []))
+(defn add_error [error]
+  (swap! errors conj error))
+
+(defn write-to-file [text fnm]
+  (let [lines (if (vector? text) (join "\n" text) text)]
+    (execute
+      (str "call writefile(split(\"" lines "\", \"\n\"), '" fnm "')"))))
+
+(write-to-file @errors "../tmp/errors")
+(execute "qa!")

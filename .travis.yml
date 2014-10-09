@@ -16,6 +16,7 @@ install:
   - cd -
 
 script: 
-  # Need to run vim with a source file that exits
   - cd test && vim -S run.vim
+    # If errors file is empty we are happy
+  - cd ../tmp && ! test -s errors 
 
