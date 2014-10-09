@@ -1,0 +1,15 @@
+branches:
+  only:
+    - master
+
+# language: ruby
+# rvm:
+#   - "2.1.2"
+
+# install: 
+#   - bundle install
+#     # Assure order of files for qed
+#   - mkdir tmp || true
+script: 
+  # Is there vim?
+  - which vim

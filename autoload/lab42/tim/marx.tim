@@ -1,0 +1,4 @@
+(ns lab42.tim.marx)
+(defn get-mark [mark]
+  (let [ line (lab42.tim.text/split-lines (with-out-str (execute (str "marks " mark))) 1)]
+    (map read-string (lab42.tim.seq/slice (split line #"\s+") 1 2))))

@@ -1,0 +1,9 @@
+(ns lab42.tim.text)
+
+(defn split-lines 
+  ([lines idx]
+   (nth (split-lines lines) idx))
+  ([lines]
+    (split lines "\n")))
+
+
