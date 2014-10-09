@@ -1,4 +1,8 @@
 (print "hello run.tim")
 (use 'timl.test)
 (assert false)
-(execute "wqa")
+; In case of no errors
+(if (zero? errors)
+  (execute "wqa")
+  (execute "cquit"))
+
