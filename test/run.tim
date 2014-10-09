@@ -1,0 +1,4 @@
+(print "hello run.tim")
+(use 'timl.test)
+(assert false)
+(execute "wqa")
