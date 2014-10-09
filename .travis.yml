@@ -11,6 +11,6 @@ branches:
 #     # Assure order of files for qed
 #   - mkdir tmp || true
 script: 
-  # Is there ~/.vim?
-  ls -ltr ~/.vim
+  #show .vimrc
+  ls -ltr ~/.vim*
 
