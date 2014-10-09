@@ -12,4 +12,5 @@ branches:
 #   - mkdir tmp || true
 script: 
   # Is there vim?
-  - which vim
+  - vim --version
+
