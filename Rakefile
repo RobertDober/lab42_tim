@@ -7,8 +7,8 @@
 #
 # --- Helpers
 #
-def sh! *args
-  sh(*args){}
+def dir? arg
+  File.directory? expand arg
 end
 
 def expand arg
@@ -19,16 +19,29 @@ def file? arg
   File.exists? expand arg
 end
 
+def make_dir dir
+  rule dir do | ft |
+    sh "mkdir #{ft.name}" unless dir? ft.name
+  end
+end
+
 def make_file file, &blk
   rule file do | ft |
-    puts "[rake]: making file #{ft.name}"
-    blk.( ft ) unless file? file
+    unless file? file
+      puts "[rake]: making file #{ft.name}"
+      blk.( ft )
+    end
   end
+end
+
+def sh! *args
+  sh(*args){}
 end
 
 #
 # --- Configuration
 #
+TMP_DIR         = expand 'tmp/'
 PATHOGEN_HOME   = expand '~/.vim/bundle'
 VIMRC           = expand '~/.vimrc'
 VIM_AUTOLOAD    = expand '~/.vim/autoload'
@@ -65,13 +78,16 @@ namespace :install do
   end
 end # namespace :install
 
+
 desc "installation job for travis"
 task :installation => ["install:pathogen"] do
   puts "[rake]: installation finished"
 end
 
+make_dir TMP_DIR
+
 desc "launch vim with test runner ane analyze results"
-task test: [:run_tests, :analyze_tests] 
+task test: [ TMP_DIR, :run_tests, :analyze_tests] 
 
 task :run_tests do  
   sh "vim -S test/run.vim"
