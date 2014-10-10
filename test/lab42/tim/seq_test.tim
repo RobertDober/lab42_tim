@@ -1,4 +1,11 @@
-(ns lab42.tim.seq-test)
+(ns test.lab42.tim.seq-test)
 (use 'lab42.tim.seq)
+(use 'lab42.tim.test)
+
+(def digits (apply vector (range 9)))
+
+
+(test "subsequence" (= [1 2] (slice digits 1 2)))
+(test-eq "running off the end is not a problem" [8] (slice digits 8 3))
 
 

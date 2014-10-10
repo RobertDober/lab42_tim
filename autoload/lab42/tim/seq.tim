@@ -1,6 +1,4 @@
 (ns lab42.tim.seq)
 
-(defn slice [s start end]
-  (loop [result [] idx start]
-    (if (> idx end) result
-      (recur (conj result (nth s idx)) (inc idx)))))
+(defn slice [s start len]
+  (take len (drop start s)))

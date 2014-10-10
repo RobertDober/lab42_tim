@@ -1,24 +1,10 @@
-(ns run)
+(defn load-test [test-file]
+  (#*timl#loader#source (str "test/lab42/tim/" (replace test-file "-" "_") ".tim")))
 
-(def messages (atom []))
+(def test-file (#*fnamemodify "autoload/lab42/tim/test.tim" ":p"))
+(#*timl#loader#source test-file)
 
-(defn add-passed [msg]
-  (swap! messages conj (str "passed " msg)))
-(defn add-error [error]
-  (swap! messages conj (str "failed " error)))
+(load-test "seq-test")
 
-(defmacro test [ msg & body]
-  `(if ~@body 
-     (add-passed (str ~msg))
-     (add-error (str ~msg ": " (pr-str '~@body)))))
-
-(defn write-to-file [text fnm]
-  (let [lines (if (vector? text) (join "\n" text) text)]
-    (execute
-      (str "call writefile(split(\"" lines "\", \"\n\"), '" fnm "')"))))
-
-; (test "one eq two" (= 1 2))
-(test "true" true)
-
-(write-to-file @messages "tmp/test_result_1")
+(lab42.tim.test/write-to-file @lab42.tim.test/messages "tmp/test_result_2")
 (execute "qa!")

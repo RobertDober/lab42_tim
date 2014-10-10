@@ -1,0 +1,24 @@
+(ns lab42.tim.test)
+
+(def messages (atom []))
+
+(defn add-passed [msg]
+  (swap! messages conj (str "passed " msg)))
+(defn add-error [error]
+  (swap! messages conj (str "failed " error)))
+
+(defmacro test [ msg & body]
+  `(if ~@body 
+     (add-passed (str ~msg))
+     (add-error (str ~msg ": " (pr-str '~@body)))))
+
+(defmacro test-eq [msg result & body]
+  `(if (= ~result  ~@body) 
+     (add-passed (str ~msg))
+     (add-error (str ~msg " expected: " (pr-str '~@body) " to equal: " ~result " but is: " ~@body))))
+  
+(defn write-to-file [text fnm]
+  (let [lines (if (vector? text) (join "\n" text) text)]
+    (execute
+      (str "call writefile(split(\"" lines "\", \"\n\"), '" fnm "')"))))
+
