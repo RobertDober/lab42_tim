@@ -1,16 +1,18 @@
+#--------------------------------------------------------------------
+#
+# Rakefile to implement Travis-CI installation and tests
+#
+#---------------------------------------------------------------------
 
+#
+# --- Helpers
+#
 def sh! *args
   sh(*args){}
 end
 
 def expand arg
-  case arg
-  when Enumerable
-    arg.map{ |f| expand f }
-      .join " "
-  else
-    File.expand_path arg
-  end
+  File.expand_path arg
 end
 
 def file? arg
@@ -23,13 +25,18 @@ def make_file file, &blk
   end
 end
 
-PATHOGEN_SOURCE = expand '~/.vim/autoload/pathogen.vim'
+#
+# --- Configuration
+#
+PATHOGEN_HOME   = expand '~/.vim/bundle'
 VIMRC           = expand '~/.vimrc'
+VIM_AUTOLAOD    = expand '~/.vim/autoload'
+PATHOGEN_SOURCE = File.join VIM_AUTOLOAD, 'pathogen.vim'
 
 # desc "show which shell is used"
-task "show_shell" => [] do
-  sh "echo $SHELL"
-end
+# task "show_shell" => [] do
+#   sh "echo $SHELL"
+# end
 
 namespace :install do
   make_file VIMRC do | t |
@@ -38,10 +45,12 @@ namespace :install do
       f.puts 'syntax on'
       f.puts 'filetype plugin indent on'
     end
+    print File.read t.name
   end
 
   make_file PATHOGEN_SOURCE do | t |
-    sh! "mkdir -p #{expand %w{~/.vim/autoload ~/.vim/bundle}} && curl -LSso #{t.name} https://tpo.pe/pathogen.vim"
+    sh! "mkdir -p #{VIM_AUTOLOAD} #{PATHOGEN_HOME} && curl -LSso #{t.name} https://tpo.pe/pathogen.vim"
+    sh! "git clone https://github.com/tpope/timl #{File.join PATHOGEN_HOME, "timl"}"
   end
 
   desc "prepare installation directory for pathogen"
@@ -63,5 +72,3 @@ end
 desc "launch vim with test runner"
 task :test do  
 end
-# - cd ~/.vim/bundle && git clone https://github.com/tpope/timl
-# - cd -
