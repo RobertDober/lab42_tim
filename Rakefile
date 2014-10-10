@@ -71,4 +71,5 @@ end
 
 desc "launch vim with test runner"
 task :test do  
+  sh "cd test && vim -S run.vim"
 end
