@@ -30,7 +30,7 @@ end
 #
 PATHOGEN_HOME   = expand '~/.vim/bundle'
 VIMRC           = expand '~/.vimrc'
-VIM_AUTOLAOD    = expand '~/.vim/autoload'
+VIM_AUTOLOAD    = expand '~/.vim/autoload'
 PATHOGEN_SOURCE = File.join VIM_AUTOLOAD, 'pathogen.vim'
 
 # desc "show which shell is used"
