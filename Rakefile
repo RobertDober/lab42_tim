@@ -3,12 +3,28 @@ def sh! *args
   sh(*args){}
 end
 
-def file? arg
-  File.exists? File.expand_path arg
+def expand arg
+  case arg
+  when Enumerable
+    arg.map{ |f| expand f }
+      .join " "
+  else
+    File.expand_path arg
+  end
 end
 
-PATHOGEN_SOURCE = '~/.vim/autoload/pathogen.vim'
-VIMRC           = '~/.vimrc'
+def file? arg
+  File.exists? expand arg
+end
+
+def make_file file, &blk
+  rule file do | ft |
+    blk.( ft ) unless file? file
+  end
+end
+
+PATHOGEN_SOURCE = expand '~/.vim/autoload/pathogen.vim'
+VIMRC           = expand '~/.vimrc'
 
 # desc "show which shell is used"
 task "show_shell" => [] do
@@ -16,17 +32,16 @@ task "show_shell" => [] do
 end
 
 namespace :install do
-  rule VIMRC do | t |
+  make_file VIMRC do | t |
     File.open t.name, "w" do | f |
       f.puts 'execute pathogen#infect()'
       f.puts 'syntax on'
       f.puts 'filetype plugin indent on'
-    end unless file? t.name
+    end
   end
 
-  rule PATHOGEN_SOURCE do | t |
-    sh! "mkdir -p ~/.vim/autoload ~/.vim/bundle && curl -LSso #{t.name} https://tpo.pe/pathogen.vim" unless
-    file? t.name
+  make_file PATHOGEN_SOURCE do | t |
+    sh! "mkdir -p #{expand %w{~/.vim/autoload ~/.vim/bundle}} && curl -LSso #{t.name} https://tpo.pe/pathogen.vim"
   end
 
   desc "prepare installation directory for pathogen"
