@@ -17,8 +17,8 @@
     (execute
       (str "call writefile(split(\"" lines "\", \"\n\"), '" fnm "')"))))
 
-(test "one eq two" (= 1 2))
+; (test "one eq two" (= 1 2))
 (test "true" true)
 
-(write-to-file @messages "../tmp/errors")
+(write-to-file @messages "tmp/test_result_1")
 (execute "qa!")

@@ -1,3 +1,1 @@
-TLsource run.tim
-
-
+TLsource test/run.tim

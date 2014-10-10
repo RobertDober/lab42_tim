@@ -7,19 +7,8 @@ rvm:
   - "2.1.2"
 
 install: 
-  # We will use Ruby to analyze the testoutput files
   - bundle install --without=dev
-# The following is meant to be the last install job:
   - rake installation
-  # - mkdir tmp
-  # - mkdir -p ~/.vim/autoload ~/.vim/bundle && curl -LSso ~/.vim/autoload/pathogen.vim https://tpo.pe/pathogen.vim
-  # - echo 'execute pathogen#infect()' >> ~/.vimrc
-  # - echo 'syntax on' >> ~/.vimrc
-  # - echo 'filetype plugin indent on' >> ~/.vimrc
-  # - cd ~/.vim/bundle && git clone https://github.com/tpope/timl
-  # - cd -
 
 script: 
   - rake test
-  # - cd test && vim -S run.vim
-    # If errors file is empty we are happy
