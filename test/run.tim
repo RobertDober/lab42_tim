@@ -1,12 +1,16 @@
 (ns run)
 
-(def errors (atom []))
+(def messages (atom []))
 
+(defn add-passed [msg]
+  (swap! messages conj (str "passed " msg)))
 (defn add-error [error]
-  (swap! errors conj error))
+  (swap! messages conj (str "failed " error)))
 
 (defmacro test [ msg & body]
-  `(when (not ~@body) (add-error (str ~msg ": " (pr-str '~@body)))))
+  `(if ~@body 
+     (add-passed (str ~msg))
+     (add-error (str ~msg ": " (pr-str '~@body)))))
 
 (defn write-to-file [text fnm]
   (let [lines (if (vector? text) (join "\n" text) text)]
@@ -14,6 +18,7 @@
       (str "call writefile(split(\"" lines "\", \"\n\"), '" fnm "')"))))
 
 (test "one eq two" (= 1 2))
+(test "true" true)
 
-(write-to-file @errors "../tmp/errors")
+(write-to-file @messages "../tmp/errors")
 (execute "qa!")
