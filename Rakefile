@@ -87,9 +87,9 @@ end
 make_dir TMP_DIR
 
 desc "launch vim with test runner ane analyze results"
-task test: [ TMP_DIR, :run_tests, :analyze_tests] 
+task test: [ :run_tests, :analyze_tests] 
 
-task :run_tests do  
+task :run_tests => TMP_DIR do  
   sh "vim -S test/run.vim"
 end
 task :analyze_tests do
