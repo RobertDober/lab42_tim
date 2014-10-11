@@ -8,7 +8,7 @@ rvm:
 
 install: 
   - bundle install --without=dev
-  - rake installation
+  - rake install
 
 script: 
   - rake test
