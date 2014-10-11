@@ -5,6 +5,7 @@ gem 'rake'
 
 # gem "term-ansicolor"
 gem 'colored'
+gem 'tilt'
 
 
 group :dev do
